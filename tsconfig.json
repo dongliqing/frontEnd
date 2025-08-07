@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    // ...其他配置...
+    "lib": ["ESNext", "DOM", "ES2015"],
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "types": ["element-plus/global"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+  }
+}
