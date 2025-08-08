@@ -21,29 +21,17 @@ import { ref, nextTick, watch } from 'vue';
 import UserInfo from '@/components/UserInfo.vue';
 import SystemInfo from '@/components/SystemInfo.vue';
 import TicketInfo from '@/components/TicketInfo.vue';
-import { getWeather, textChat } from "@/api/common";
-import { fetchStreamData } from "@/utils/fetchStream";
+import { textChatUseTool, textChat } from "@/api/common";
+
 
 const chatContainer = ref<HTMLElement | null>(null);
 const inputValue = ref();
 const requestFlag = ref(false);  // 请求标识
 const isLoaing = ref(false);  // 响应标识
 const massageList = ref([]);
+ 
 
-
-// getWeather({ data: "hangzhou" }).then((res) => {
-//   console.log('Weather data:', res);
-// }).catch((error) => {
-//   console.error('Error fetching weather data:', error);
-// });
-
-// textChat({}).then((res) => {
-//   console.log('textChat:', res);
-// }).catch((error) => {
-//   console.error('Error fetching weather data:', error);
-// });
-
-
+ 
 const handleSend = () => {
   if (requestFlag.value) {
     return;
@@ -63,62 +51,21 @@ const handleSend = () => {
   scrollToBottom();
 
   //设置请求表示
-  requestFlag.value = true;
+  // requestFlag.value = true;
   isLoaing.value = true;
 
 
-  //简单请求
-  doRequestSimple(content);
-  //请求有记忆的接口
-  doRequestMultiRounds(content);
-}
-
-
-
-const doRequestSimple = (content) => {
-  textChat({ data: content }).then((res) => {
-    console.log('11:', res);
+  textChatUseTool({ content  }).then((res) => {
+    console.log('res data:', res);
   }).catch((error) => {
     console.error('Error fetching weather data:', error);
-  }).finally(() => {
-    isLoaing.value = true;
-    requestFlag.value = false;
-  })
-}
-
-const doRequestMultiRounds = (content) => {
-  const curIndex = massageList.value.length;
-
-  // const url = "/api/streamTextChat";   //单轮流式输出
-  const url = "/api/multiRoundsStreamTextChat";  //多轮对话流式输出
-
-  fetchStreamData(url, {
-    content
-  }, {
-    onMessage: (data) => {
-      isLoaing.value = false;
-
-      const curMeaasge = massageList.value[curIndex];
-      if (curMeaasge) {
-        curMeaasge.content += data;
-      } else {
-        massageList.value.push({
-          role: 'assistant',
-          content: data
-        })
-      }
-
-      //滚动到底部
-      scrollToBottom();
-    },
-    onDone: () => {
-      requestFlag.value = false;
-    },
-    onError: (err) => {
-      console.log('onError', err);
-    }
   });
+
 }
+
+
+
+
 
 const scrollToBottom = () => {
   nextTick(() => {
