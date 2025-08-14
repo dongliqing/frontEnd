@@ -1,17 +1,17 @@
 import request from "@/utils/request";
 
-export const getWeather = (params) => {
+export const getUserDetail = (params) => {
     return request({
         method: "get",
-        url: "/api/weather",
+        url: "/api/getUserDetail",
         params,
     });
 };
 
-export const sendMsg = (data) => {
+export const userLogin = (data) => {
     return request({
         method: "post",
-        url: "/send-msg",
+        url: "/api/userLogin",
         data,
     });
 };
@@ -39,3 +39,11 @@ export const textChatUseTool = (data) => {
 
 
 
+//调用工具接口并格式化数据
+export const textChatUseToolFormat = (data) => {
+    return request({
+        method: "post",
+        url: "/api/textChatUseToolFormat",
+        data,
+    });
+};

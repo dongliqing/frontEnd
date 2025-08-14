@@ -16,6 +16,11 @@ const routes: RouteRecordRaw[] = [
     name: 'Tool',
     component: () => import('@/views/Tool/Tool.vue')
   },
+  {
+    path: '/format',
+    name: 'format',
+    component: () => import('@/views/Format/Format.vue')
+  },
 ]
 
 const router = createRouter({

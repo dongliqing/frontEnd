@@ -1,16 +1,28 @@
 <template>
   <div class="flex flex-col h-full">
-    <header class="text-center bg-[#ddd] h-[45px] leading-[45px]">大模型触发工具函数</header>
+    <header class="text-center bg-[#ddd] h-[45px] leading-[45px]">天气数据格式化</header>
     <div ref="chatContainer" class="flex-1 overflow-y-auto py-[20px]">
       <div v-for="(item, index) in messageList" :key="index">
         <UserInfo v-if="item.role === 'user'" :content="item.content" />
+
+        <div v-else-if="item.toolName === 'getCurrentWeather'"
+          class="mt-[20px] max-w-[80%] bg-[#a0cfff85] px-[20px] py-[10px] rounded-[10px] rounded-tl-none">
+          <h3> {{ item.location }}</h3>
+          <div v-for="(weather, index) in item.toolData" :key="index">
+            <span>{{ weather.fxDate }}</span>
+            <span>{{ weather.textDay }}</span>
+            <span>最高气温：{{ weather.tempMax }}℃</span>
+            <span>最低气温：{{ weather.tempMin }}℃</span>
+          </div>
+        </div>
+
         <SystemInfo v-else :content="item.content" />
       </div>
       <Loading v-if="isLoaing" />
     </div>
     <footer class="h-[100px] bg-[#ddd] flex p-[20px]">
-      <el-input type="textarea" :rows="4" @keyup.enter.prevent="handleSend" placeholder="请输入聊天消息" class="flex-1 h-[100px]"
-        v-model="inputValue" />
+      <el-input type="textarea" :rows="4" @keyup.enter.prevent="handleSend" placeholder="请输入聊天消息"
+        class="flex-1 h-[100px]" v-model="inputValue" />
       <el-button type="primary" class="ml-[20px]" :disabled="isLoaing" @click="handleSend">发送</el-button>
     </footer>
   </div>
@@ -20,7 +32,7 @@
 import { ref, nextTick, } from 'vue';
 import UserInfo from '@/components/UserInfo.vue';
 import SystemInfo from '@/components/SystemInfo.vue';
-import { textChatUseTool } from "@/api/common";
+import { textChatUseToolFormat, } from "@/api/common";
 import Loading from '@/components/Loading.vue';
 
 const chatContainer = ref<HTMLElement | null>(null);
@@ -28,6 +40,7 @@ const inputValue = ref();
 // const requestFlag = ref(false);  // 请求标识
 const isLoaing = ref(false);  // 响应标识
 const messageList = ref([]);
+
 
 
 const handleSend = () => {
@@ -52,12 +65,21 @@ const handleSend = () => {
   isLoaing.value = true;
 
 
-  textChatUseTool({ content }).then((res) => {
-    console.log('res data:', res);
-    messageList.value.push({
-      role: 'assistant',
-      content: res.data,
-    });
+  textChatUseToolFormat({ content }).then((res) => {
+    // console.log('res data:', res);
+    try {
+      const result = JSON.parse(res.data);
+      messageList.value.push({
+        role: 'assistant',
+        ...result,
+      });
+    } catch (error) {
+      messageList.value.push({
+        role: 'assistant',
+        content: res.data,
+      });
+    }
+
 
     //滚动到底部
     scrollToBottom();
