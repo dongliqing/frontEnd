@@ -65,10 +65,10 @@ const handleSend = () => {
 
 
   //简单请求
-  doRequestSimple(content);
-  //请求流式输出的接口
-  // doRequestStream(content, false);
-  //请求多轮对话的流式输出接口
+  // doRequestSimple(content);
+  //请求流式输出 单轮对话接口
+  doRequestStream(content, false);
+  //请求流式输出 多轮对话的接口
   // doRequestStream(content, true);
 }
 
@@ -94,7 +94,7 @@ const doRequestStream = (content, isMultiRounds = false) => {
   const curIndex = messageList.value.length;
 
   // const url = "/api/streamTextChat";   //单轮流式输出
-  const url = isMultiRounds ? "/api/streamTextChat" : "/api/multiRoundsStreamTextChat";  //多轮对话流式输出
+  const url = isMultiRounds ? "/api/multiRoundsStreamTextChat" : "/api/streamTextChat";
 
   fetchStreamData(url, {
     content
