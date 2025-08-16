@@ -37,7 +37,7 @@ import Loading from '@/components/Loading.vue';
 
 const chatContainer = ref<HTMLElement | null>(null);
 const inputValue = ref();
-// const requestFlag = ref(false);  // 请求标识
+// const requestStreamFinish = ref(false);  // 请求标识
 const isLoaing = ref(false);  // 响应标识
 const messageList = ref([]);
 
