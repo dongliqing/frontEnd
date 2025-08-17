@@ -11,11 +11,8 @@
         <div v-else-if="item.toolName === 'getCurrentWeather'"
           class="mt-[20px] max-w-[80%] bg-[#a0cfff85] px-[20px] py-[10px] rounded-[10px] rounded-tl-none">
           <h3> {{ item.location }}</h3>
-          <div v-for="(weather, index) in item.toolData" :key="index">
-            <span>{{ weather.fxDate }}</span>
-            <span>{{ weather.textDay }}</span>
-            <span>最高气温：{{ weather.tempMax }}℃</span>
-            <span>最低气温：{{ weather.tempMin }}℃</span>
+          <div v-for="(weather, index) in item.toolData" :key="index" class=">span:w-[30px]">
+            <el-card class="mb-[10px]">{{ weather.fxDate }} | {{ weather.textDay }} | 最高气温：{{ weather.tempMax }}℃ | 最低气温：{{ weather.tempMin }}℃</el-card>
           </div>
         </div>
 

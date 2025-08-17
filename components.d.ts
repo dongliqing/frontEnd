@@ -11,6 +11,7 @@ declare module 'vue' {
     CommonQuestion: typeof import('./src/components/CommonQuestion.vue')['default']
     copy: typeof import('./src/components/TicketInfo.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElInput: typeof import('element-plus/es')['ElInput']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Loading: typeof import('./src/components/Loading.vue')['default']
