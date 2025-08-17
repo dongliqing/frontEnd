@@ -3,6 +3,8 @@
     <header class="text-center bg-[#ddd] h-[45px] leading-[45px]">我的AI应用</header>
     <div ref="chatContainer" class="flex-1 overflow-y-auto py-[20px]">
 
+      <CommonQuestion @select="(e) => { inputValue = e; scrollToBottom() }" />
+
       <div v-for="(item, index) in messageList" :key="index">
         <UserInfo v-if="item.role === 'user'" :content="item.content" />
         <SystemInfo v-else :content="item.content" />
@@ -11,8 +13,8 @@
 
     </div>
     <footer class="h-[100px] bg-[#ddd] flex p-[20px]">
-      <el-input type="textarea" :rows="4" @keyup.enter.prevent="handleSend" placeholder="请输入聊天消息"
-        class="flex-1 h-[100px]" v-model="inputValue" />
+      <el-input type="textarea" :rows="3" @keyup.enter.prevent="handleSend" placeholder="请输入聊天消息"
+        class="flex-1 h-[100px] !text-[20px] !text-[#000]" v-model="inputValue" />
       <el-button type="primary" class="ml-[20px]" :disabled="requestStreamFinish" @click="handleSend">发送</el-button>
     </footer>
   </div>
@@ -22,6 +24,7 @@
 import { ref, nextTick, } from 'vue';
 import UserInfo from '@/components/UserInfo.vue';
 import SystemInfo from '@/components/SystemInfo.vue';
+import CommonQuestion from '@/components/CommonQuestion.vue';
 import { getUserDetail, userLogin, textChat } from "@/api/common";
 import { fetchStreamData } from "@/utils/fetchStream";
 import { marked } from 'marked'
@@ -71,7 +74,7 @@ const handleSend = () => {
 
   //请求流式输出 单轮对话接口
   // doRequestStream(content, false);
-  
+
   //请求流式输出 多轮对话的接口
   // doRequestStream(content, true);
 }
@@ -86,6 +89,9 @@ const doRequestSimple = (content) => {
       // content: res.data.choices[0].message.content,
       content: marked(res.data.choices[0].message.content),
     });
+
+    scrollToBottom();
+
   }).catch((error) => {
     console.error('Error fetching weather data:', error);
   }).finally(() => {

@@ -2,6 +2,9 @@
   <div class="flex flex-col h-full">
     <header class="text-center bg-[#ddd] h-[45px] leading-[45px]">天气数据格式化</header>
     <div ref="chatContainer" class="flex-1 overflow-y-auto py-[20px]">
+
+      <CommonQuestion @select="(e) => { inputValue = e; scrollToBottom() }" />
+
       <div v-for="(item, index) in messageList" :key="index">
         <UserInfo v-if="item.role === 'user'" :content="item.content" />
 
@@ -21,8 +24,8 @@
       <Loading v-if="isLoaing" />
     </div>
     <footer class="h-[100px] bg-[#ddd] flex p-[20px]">
-      <el-input type="textarea" :rows="4" @keyup.enter.prevent="handleSend" placeholder="请输入聊天消息"
-        class="flex-1 h-[100px]" v-model="inputValue" />
+      <el-input type="textarea" :rows="3" @keyup.enter.prevent="handleSend" placeholder="请输入聊天消息"
+        class="flex-1 h-[100px] !text-[20px] !text-[#000]" v-model="inputValue" />
       <el-button type="primary" class="ml-[20px]" :disabled="isLoaing" @click="handleSend">发送</el-button>
     </footer>
   </div>
@@ -32,6 +35,7 @@
 import { ref, nextTick, } from 'vue';
 import UserInfo from '@/components/UserInfo.vue';
 import SystemInfo from '@/components/SystemInfo.vue';
+import CommonQuestion from '@/components/CommonQuestion.vue';
 import { textChatUseToolFormat, } from "@/api/common";
 import Loading from '@/components/Loading.vue';
 
