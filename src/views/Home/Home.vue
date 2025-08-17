@@ -69,11 +69,11 @@ const handleSend = () => {
   isLoaing.value = true;
 
 
-  //简单请求
-  doRequestSimple(content);
+  // 简单请求
+  // doRequestSimple(content);
 
   //请求流式输出 单轮对话接口
-  // doRequestStream(content, false);
+  doRequestStream(content, false);
 
   //请求流式输出 多轮对话的接口
   // doRequestStream(content, true);
@@ -114,13 +114,11 @@ const doRequestStream = (content, isMultiRounds = false) => {
 
       const curMeaasge = messageList.value[curIndex];
       if (curMeaasge) {
-        curMeaasge.oriContent += data;
-        curMeaasge.content = marked(curMeaasge.oriContent);
+        curMeaasge.content += data;
       } else {
         messageList.value.push({
           role: 'assistant',
           content: data,
-          oriContent: data,
         })
       }
 
